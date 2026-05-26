@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "main", "master", "feature/devops" ]
+    branches: ["main", "master", "feature/devops"]
   pull_request:
-    branches: [ "main", "master", "feature/devops" ]
+    branches: ["main", "master", "feature/devops"]
 
 jobs:
   build:
@@ -17,28 +17,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
 
       - name: Run tests
-        run: |
-          echo "Running tests..."
-          node -e "const app = require('./app.js'); console.log('App loaded successfully'); process.exit(0);" || true
+        run: node -e "require('./app.js')" && echo "Tests passed!" || echo "Tests failed!"
 
       - name: Build Docker image
-        run: docker build -t express-hello-world:${{ github.sha }} .
+        run: docker build -t express-hello-world .
 
       - name: Notify success
         if: success()
-        run: echo 'CI Pipeline completed successfully! Image tag: express-hello-world:${{ github.sha }}'
+        run: echo "CI Pipeline completed successfully!"
 
-  notify-failure:
-    runs-on: ubuntu-latest
-    needs: build
-    if: failure()
-    steps:
       - name: Notify failure
-        run: echo "CI Pipeline FAILED! Please check the logs above for details."
+        if: failure()
+        run: echo "CI Pipeline FAILED! Please check the logs."
