@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: node -e "require('./app.js')" && echo "Tests passed!" || echo "Tests failed!"
+        run: node --check app.js && echo "Tests passed!"
 
       - name: Build Docker image
         run: docker build -t express-hello-world .
