@@ -33,7 +33,7 @@ jobs:
 
       - name: Notify success
         if: success()
-        run: echo "CI Pipeline completed successfully! Image tag: express-hello-world:${{ github.sha }}"
+        run: echo 'CI Pipeline completed successfully! Image tag: express-hello-world:${{ github.sha }}'
 
   notify-failure:
     runs-on: ubuntu-latest
